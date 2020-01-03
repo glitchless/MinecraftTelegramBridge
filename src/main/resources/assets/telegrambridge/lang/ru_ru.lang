@@ -1,0 +1,7 @@
+telegrambridge.serverstart=\[ Сервер запущен ]
+telegrambridge.serverstop=\[ Сервер остановлен ]
+telegrambridge.playerjoin=\[ Игрок *${playername}* зашел в игру ]
+telegrambridge.playerleave=\[ Игрок *${playername}* вышел из игры ]
+telegrambridge.telegramchatmessage=*${playername}:* ${message}
+telegrambridge.minecraftchatmessage=§3Ретранслятор§f / <§b${nickname}§f> ${message}
+telegrambridge.notfoundchat=Чата `${chatid}` не найдено в списке разрешенных. Вы можете его добавить в `config/telegrambridge.cfg`
