@@ -7,8 +7,8 @@ public class TextUtils {
         return text.replaceFirst(textToBold, "*" + textToBold + "*");
     }
 
-    public static String translate(String key, Object... args) {
+    public static String translate(String key) {
         final String text = TelegramBridgeMod.getLangFile().getProperty(key);
-        return String.format(text, args);
+        return text != null ? text : "Unknown key: " + key;
     }
 }

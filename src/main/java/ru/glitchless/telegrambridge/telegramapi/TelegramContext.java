@@ -6,10 +6,8 @@ import ru.glitchless.telegrambridge.handlers.IMessageReceiver;
 import ru.glitchless.telegrambridge.telegramapi.delegate.TelegramReceiver;
 import ru.glitchless.telegrambridge.telegramapi.delegate.TelegramSender;
 
-import javax.annotation.Nullable;
-
 public class TelegramContext {
-    private final String BASE_URL = "https://api.telegram.org/bot" + TelegramBridgeConfig.telegramConfig.api_token;
+    private final String BASE_URL = "https://api.telegram.org/bot" + TelegramBridgeConfig.telegram_config.api_token;
     private final Logger logger;
     private final TelegramReceiver receiver;
     private final TelegramSender sender;
@@ -32,13 +30,12 @@ public class TelegramContext {
     }
 
     /**
-     * Set listener for input message.
+     * Add listener for input message.
      *
      * @param messageReceiver listener
-     * @param chatId          null if is a global receiver. For command or other. Notnull for chat bridge
      */
-    public void setListener(IMessageReceiver messageReceiver, @Nullable String chatId) {
-        receiver.setListener(messageReceiver, chatId);
+    public void addListener(IMessageReceiver messageReceiver) {
+        receiver.addListener(messageReceiver);
     }
 
 

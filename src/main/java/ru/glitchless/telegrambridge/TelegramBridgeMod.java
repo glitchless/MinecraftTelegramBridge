@@ -1,10 +1,14 @@
 package ru.glitchless.telegrambridge;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 import ru.glitchless.telegrambridge.config.LanguageFile;
+import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
+import ru.glitchless.telegrambridge.handlers.ToMinecraftResender;
 import ru.glitchless.telegrambridge.telegramapi.TelegramContext;
 import ru.glitchless.telegrambridge.telegramapi.TelegramLoop;
 
@@ -25,6 +29,10 @@ public class TelegramBridgeMod {
         return langFile;
     }
 
+    public static TelegramContext getContext() {
+        return context;
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
@@ -34,7 +42,13 @@ public class TelegramBridgeMod {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        if (FMLCommonHandler.instance().getSide() != Side.SERVER
+                && TelegramBridgeConfig.server_only) {
+            return;
+        }
         telegramLoop = new TelegramLoop(context);
         telegramLoop.start();
+
+        context.addListener(new ToMinecraftResender());
     }
 }

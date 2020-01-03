@@ -12,11 +12,8 @@ import javax.annotation.Nonnull;
 public abstract class BaseMessageReceiver implements IMessageReceiver {
     private final Logger logger = LogManager.getLogger(BaseMessageReceiver.class);
 
-    /**
-     * Use this
-     */
-    protected boolean onTelegramMessage(UserObject userObject, @Nonnull String message) {
-        return false;
+    public static boolean isCommand(String message) {
+        return message.startsWith("/");
     }
 
     @Override
@@ -29,4 +26,6 @@ public abstract class BaseMessageReceiver implements IMessageReceiver {
         }
         return onTelegramMessage(messageObject.getFrom(), messageText);
     }
+
+    abstract boolean onTelegramMessage(UserObject userObject, @Nonnull String message);
 }

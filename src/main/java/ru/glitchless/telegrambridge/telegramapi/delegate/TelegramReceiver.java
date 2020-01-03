@@ -16,8 +16,6 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class TelegramReceiver {
     private final String UPDATE_URL;
@@ -26,12 +24,11 @@ public class TelegramReceiver {
     }.getType();
     private final Logger logger;
     private final TelegramContext context;
-    private final Map<String, IMessageReceiver> receiverMap = new ConcurrentHashMap<String, IMessageReceiver>();
-    private final List<IMessageReceiver> globalMessageReceivers = new ArrayList<>();
+    private final List<IMessageReceiver> receivers = new ArrayList<>();
 
     public TelegramReceiver(TelegramContext context) {
         UPDATE_URL = context.getBaseUrl() + "/getUpdates?allowed_updates=[\"message\"]&offset=%s&timeout="
-                + TelegramBridgeConfig.telegramConfig.telegram_long_pooling_timeout;
+                + TelegramBridgeConfig.telegram_config.telegram_long_pooling_timeout;
         this.logger = context.getLogger();
         this.context = context;
     }
@@ -58,8 +55,12 @@ public class TelegramReceiver {
         }
 
         boolean success = false;
-        for (IMessageReceiver receivers : globalMessageReceivers) {
-            success |= receivers.onTelegramObjectMessage(updateObject.getMessage());
+        for (IMessageReceiver receivers : receivers) {
+            try {
+                success |= receivers.onTelegramObjectMessage(updateObject.getMessage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
 
         if (success) {
@@ -67,22 +68,13 @@ public class TelegramReceiver {
         }
 
         final String chatId = String.valueOf(updateObject.getMessage().getChat().getId());
-        IMessageReceiver receiver = receiverMap.get(chatId);
-        if (receiver != null) {
-            receiver.onTelegramObjectMessage(updateObject.getMessage());
-            return;
-        }
 
         final String answer = TextUtils.translate("telegrambridge.notfoundchat")
                 .replace("${chatid}", String.valueOf(updateObject.getMessage().getChat().getId()));
         context.sendMessage(chatId, answer);
     }
 
-    public void setListener(IMessageReceiver messageReceiver, @Nullable String chatid) {
-        if (chatid != null) {
-            receiverMap.put(chatid, messageReceiver);
-            return;
-        }
-        globalMessageReceivers.add(messageReceiver);
+    public void addListener(IMessageReceiver messageReceiver) {
+        receivers.add(messageReceiver);
     }
 }
