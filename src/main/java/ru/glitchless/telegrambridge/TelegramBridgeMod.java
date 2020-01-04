@@ -1,5 +1,6 @@
 package ru.glitchless.telegrambridge;
 
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -18,11 +19,13 @@ import ru.glitchless.telegrambridge.telegramapi.TelegramLoop;
 @Mod(modid = TelegramBridgeMod.MODID,
         name = TelegramBridgeMod.NAME,
         version = TelegramBridgeMod.VERSION,
+        updateJSON = "https://raw.githubusercontent.com/glitchless/MinecraftTelegramBridge/master/static/update.json",
         acceptableRemoteVersions = "*")
 public class TelegramBridgeMod {
     public static final String MODID = "telegrambridge";
     public static final String NAME = "Telegram Bridge";
     public static final String VERSION = "1.0";
+    public static final String UPDATE_URL = "https://www.curseforge.com/minecraft/mc-mods/telegram-bridge";
 
     private static Logger logger;
     private static TelegramContext context;
@@ -57,6 +60,14 @@ public class TelegramBridgeMod {
             return;
         }
         ToTelegramEvent.broadcastToChats(TelegramBridgeConfig.text.server_start);
+        checkUpdate();
+    }
+
+    private void checkUpdate() {
+        if (ForgeVersion.getResult(FMLCommonHandler.instance().findContainerFor(this)).status
+                == ForgeVersion.Status.OUTDATED) {
+            ToTelegramEvent.broadcastToChats("There's a new update for the mod! Download it [here](" + UPDATE_URL + ")!");
+        }
     }
 
     @Mod.EventHandler

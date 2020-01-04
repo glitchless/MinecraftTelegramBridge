@@ -27,7 +27,7 @@ public class TelegramBridgeConfig {
         public String api_token = "";
 
         @Config.Comment("timeout in seconds for long pooling update")
-        public int telegram_long_pooling_timeout = 10;
+        public int telegram_long_pooling_timeout = 100;
     }
 
     public static class RelayLevel {
@@ -41,15 +41,15 @@ public class TelegramBridgeConfig {
 
     public static class Text {
         public String death_message = "\\[ ${deathmessage} ]";
-        public String server_start = "\\[ Сервер запущен ]";
-        public String server_stop = "\\[ Сервер остановлен ]";
-        public String player_join = "\\[ Игрок *${nickname}* зашел в игру ]";
-        public String player_leave = "\\[ Игрок *${nickname}* вышел из игры ]";
+        public String server_start = "\\[ Server has started ]";
+        public String server_stop = "\\[ Server has stopped ]";
+        public String player_join = "\\[ *${nickname}* has connected ]";
+        public String player_leave = "\\[ *${nickname}* has disconnected ]";
         public String chatmessage_to_telegram = "*${nickname}:* ${message}";
-        public String chatmessage_to_minecraft = "§3Ретранслятор§f / <§b${nickname}§f> ${message}";
-        public String notfoundchat = "Чата `${chatid}` не найдено в списке разрешенных. Вы можете его добавить в `config/telegrambridge.cfg`";
-        public String player_empty = "Никого онлайн. Может, пора это исправить? :)";
-        public String player_list = "*Игроки онлайн*:${endline}${endline}${playerlist}${endline}Всего игроков: *${playercount}*";
+        public String chatmessage_to_minecraft = "§3TelegramBridge§f / <§b${nickname}§f> ${message}";
+        public String notfoundchat = "Chat `${chatid}` is not found in allowed chats. You can add it in `config/telegrambridge.cfg`";
+        public String player_empty = "No one is online. Maybe it's time to fix it? :)";
+        public String player_list = "*Players online*:${endline}${endline}${playerlist}${endline}Total: *${playercount}*";
     }
 
     public enum RelayMode {
