@@ -1,3 +1,4 @@
+telegrambridge.deathmessage=\[ ${deathmessage} ]
 telegrambridge.serverstart=\[ Сервер запущен ]
 telegrambridge.serverstop=\[ Сервер остановлен ]
 telegrambridge.playerjoin=\[ Игрок *${nickname}* зашел в игру ]
