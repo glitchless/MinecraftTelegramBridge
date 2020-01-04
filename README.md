@@ -8,6 +8,7 @@
 5. Add telegram chat id in telegrambridge.cfg (you can use [GetChatBot](t.me/GetChatBot))
 6. Change text block in config 
 7. Check it!
+8. You can use [ServerLocalization](https://www.curseforge.com/minecraft/mc-mods/server-localization) for better support
 
 # Example
 ## Telegram
