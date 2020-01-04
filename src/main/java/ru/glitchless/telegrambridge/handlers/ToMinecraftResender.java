@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
 import ru.glitchless.telegrambridge.telegramapi.model.UserObject;
-import ru.glitchless.telegrambridge.utils.TextUtils;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +29,7 @@ public class ToMinecraftResender extends BaseMessageReceiver {
             return true; // ignore
         }
 
-        String textMessage = TextUtils.translate("telegrambridge.minecraftchatmessage").replace("${nickname}", userObject.getUsername()).replace("${message}", message);
+        String textMessage = TelegramBridgeConfig.text.chatmessage_to_minecraft.replace("${nickname}", userObject.getUsername()).replace("${message}", message);
 
         FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessage(new TextComponentString(textMessage));
         return true;

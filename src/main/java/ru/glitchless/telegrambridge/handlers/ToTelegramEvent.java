@@ -23,7 +23,7 @@ public class ToTelegramEvent {
         final EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
         final ITextComponent textComponent = player.getCombatTracker().getDeathMessage();
         final String deathmessage = TextUtils.boldInText(textComponent.getUnformattedText(), player.getGameProfile().getName());
-        final String message = TextUtils.translate("telegrambridge.deathmessage").replace("${deathmessage}", deathmessage);
+        final String message = TelegramBridgeConfig.text.death_message.replace("${deathmessage}", deathmessage);
         if (event.getSource().getTrueSource() instanceof EntityPlayer
                 && TelegramBridgeConfig.relay_level.user_kill_by_user) {
             broadcastToChats(message);
@@ -40,7 +40,7 @@ public class ToTelegramEvent {
         if (!TelegramBridgeConfig.relay_level.user_join) {
             return;
         }
-        final String message = TextUtils.translate("telegrambridge.playerjoin")
+        final String message = TelegramBridgeConfig.text.player_join
                 .replace("${nickname}", event.player.getDisplayNameString());
         broadcastToChats(message);
     }
@@ -50,7 +50,7 @@ public class ToTelegramEvent {
         if (!TelegramBridgeConfig.relay_level.user_leave) {
             return;
         }
-        final String message = TextUtils.translate("telegrambridge.playerleave")
+        final String message = TelegramBridgeConfig.text.player_leave
                 .replace("${nickname}", event.player.getDisplayNameString());
         broadcastToChats(message);
     }

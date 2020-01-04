@@ -10,7 +10,6 @@ import ru.glitchless.telegrambridge.telegramapi.model.TelegramAnswerObject;
 import ru.glitchless.telegrambridge.telegramapi.model.UpdateObject;
 import ru.glitchless.telegrambridge.utils.HttpUtils;
 import ru.glitchless.telegrambridge.utils.LoggerUtils;
-import ru.glitchless.telegrambridge.utils.TextUtils;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
@@ -69,7 +68,7 @@ public class TelegramReceiver {
 
         final String chatId = String.valueOf(updateObject.getMessage().getChat().getId());
 
-        final String answer = TextUtils.translate("telegrambridge.notfoundchat")
+        final String answer = TelegramBridgeConfig.text.notfoundchat
                 .replace("${chatid}", String.valueOf(updateObject.getMessage().getChat().getId()));
         context.sendMessage(chatId, answer);
     }

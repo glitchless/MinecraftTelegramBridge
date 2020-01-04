@@ -4,7 +4,6 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.utils.TextUtils;
 
 import static ru.glitchless.telegrambridge.handlers.ToTelegramEvent.broadcastToChats;
 
@@ -23,7 +22,7 @@ public class ToTelegramResender {
             return;
         }
 
-        final String textMessage = TextUtils.translate("telegrambridge.telegramchatmessage").replace("${nickname}", event.getUsername()).replace("${message}", message);
+        final String textMessage = TelegramBridgeConfig.text.chatmessage_to_telegram.replace("${nickname}", event.getUsername()).replace("${message}", message);
         broadcastToChats(textMessage);
     }
 

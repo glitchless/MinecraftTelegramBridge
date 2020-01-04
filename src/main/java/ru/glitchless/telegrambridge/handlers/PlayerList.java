@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import ru.glitchless.telegrambridge.TelegramBridgeMod;
+import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
 
 import javax.annotation.Nonnull;
@@ -27,17 +28,18 @@ public class PlayerList implements IMessageReceiver {
         String chatId = messageObject.getChat().getId().toString();
         final List<String> players = getPlayerList();
         if (players.isEmpty()) {
-            TelegramBridgeMod.getContext().sendMessage(chatId, "Никого онлайн. Может, пора это исправить? :)");
+            TelegramBridgeMod.getContext().sendMessage(chatId, TelegramBridgeConfig.text.player_empty);
             return true;
         }
 
-        StringBuilder sb = new StringBuilder("*Игроки онлайн*\n\n");
+        final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < players.size(); i++) {
             sb.append(i + 1).append(". ").append(players.get(i).replace("_", "\\_")).append('\n');
         }
-
-        sb.append("\nВсего игроков: *").append(players.size()).append('*');
-        TelegramBridgeMod.getContext().sendMessage(chatId, sb.toString());
+        final String message = TelegramBridgeConfig.text.player_list
+                .replace("${endline}", "\n").replace("${playerlist}", sb.toString())
+                .replace("${playercount}", String.valueOf(players.size()));
+        TelegramBridgeMod.getContext().sendMessage(chatId, message);
         return true;
     }
 

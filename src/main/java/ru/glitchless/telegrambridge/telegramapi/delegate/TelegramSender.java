@@ -41,8 +41,9 @@ public class TelegramSender {
             if (TelegramBridgeConfig.verbose_logging) {
                 logger.info("Telegram answer >> " + response);
             }
-        } catch (Exception e) {
-            logger.error(e);
+        } catch (Exception ex) {
+            logger.error(ex);
+            ex.printStackTrace();
         }
     }
 

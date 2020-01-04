@@ -8,16 +8,12 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.config.LanguageFile;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.handlers.PlayerList;
 import ru.glitchless.telegrambridge.handlers.ToMinecraftResender;
 import ru.glitchless.telegrambridge.handlers.ToTelegramEvent;
 import ru.glitchless.telegrambridge.telegramapi.TelegramContext;
 import ru.glitchless.telegrambridge.telegramapi.TelegramLoop;
-import ru.glitchless.telegrambridge.utils.TextUtils;
-
-import java.util.Properties;
 
 @Mod(modid = TelegramBridgeMod.MODID,
         name = TelegramBridgeMod.NAME,
@@ -29,13 +25,8 @@ public class TelegramBridgeMod {
     public static final String VERSION = "1.0";
 
     private static Logger logger;
-    private static Properties langFile;
     private static TelegramContext context;
     private static TelegramLoop telegramLoop;
-
-    public static Properties getLangFile() {
-        return langFile;
-    }
 
     public static TelegramContext getContext() {
         return context;
@@ -44,7 +35,6 @@ public class TelegramBridgeMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        langFile = LanguageFile.getLanguageFile(event);
         context = new TelegramContext(logger);
     }
 
@@ -66,7 +56,7 @@ public class TelegramBridgeMod {
         if (!TelegramBridgeConfig.relay_level.server_start) {
             return;
         }
-        ToTelegramEvent.broadcastToChats(TextUtils.translate("telegrambridge.serverstart"));
+        ToTelegramEvent.broadcastToChats(TelegramBridgeConfig.text.server_start);
     }
 
     @Mod.EventHandler
@@ -74,6 +64,6 @@ public class TelegramBridgeMod {
         if (!TelegramBridgeConfig.relay_level.server_stop) {
             return;
         }
-        ToTelegramEvent.broadcastToChats(TextUtils.translate("telegrambridge.serverstop"));
+        ToTelegramEvent.broadcastToChats(TelegramBridgeConfig.text.server_stop);
     }
 }
