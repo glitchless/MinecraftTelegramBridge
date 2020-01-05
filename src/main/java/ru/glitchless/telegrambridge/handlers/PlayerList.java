@@ -1,8 +1,8 @@
 package ru.glitchless.telegrambridge.handlers;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import ru.glitchless.telegrambridge.TelegramBridgeMod;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
@@ -44,12 +44,12 @@ public class PlayerList implements IMessageReceiver {
     }
 
     private List<String> getPlayerList() {
-        final MinecraftServer is = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (is == null) {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
             return Collections.emptyList();
         }
         final List<String> playerList = new ArrayList<String>();
-        for (EntityPlayerMP player : is.getPlayerList().getPlayers()) {
+        for (ServerPlayerEntity player : server.getPlayerList().getPlayers()) {
             playerList.add(player.getGameProfile().getName());
         }
 

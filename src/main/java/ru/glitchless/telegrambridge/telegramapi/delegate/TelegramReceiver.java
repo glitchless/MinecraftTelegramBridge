@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TelegramReceiver {
-    private final String UPDATE_URL;
     private final Gson gson = new Gson();
     private final Type updateType = new TypeToken<TelegramAnswerObject<List<UpdateObject>>>() {
     }.getType();
@@ -26,14 +25,14 @@ public class TelegramReceiver {
     private final List<IMessageReceiver> receivers = new ArrayList<>();
 
     public TelegramReceiver(TelegramContext context) {
-        UPDATE_URL = context.getBaseUrl() + "/getUpdates?allowed_updates=[\"message\"]&offset=%s&timeout="
-                + TelegramBridgeConfig.telegram_config.telegram_long_pooling_timeout;
         this.logger = context.getLogger();
         this.context = context;
     }
 
     public void checkUpdate() throws Exception {
-        String updateJson = HttpUtils.httpGet(String.format(UPDATE_URL, TelegramOffsetDataHelper.getOffset() + 1));
+        String updateJson = HttpUtils.httpGet(String.format(context.getBaseUrl()
+                + "/getUpdates?allowed_updates=[\"message\"]&offset=%s&timeout="
+                + TelegramBridgeConfig.telegram_config.telegram_long_pooling_timeout, TelegramOffsetDataHelper.getOffset() + 1));
         LoggerUtils.logInfoInternal(logger, "Get from telegram update " + updateJson);
         TelegramAnswerObject<List<UpdateObject>> updates = gson.fromJson(updateJson, updateType);
 

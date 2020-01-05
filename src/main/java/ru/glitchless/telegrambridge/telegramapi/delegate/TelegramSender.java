@@ -3,6 +3,7 @@ package ru.glitchless.telegrambridge.telegramapi.delegate;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Logger;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
+import ru.glitchless.telegrambridge.telegramapi.TelegramContext;
 import ru.glitchless.telegrambridge.utils.HttpUtils;
 
 import java.util.AbstractMap;
@@ -13,13 +14,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TelegramSender {
     private final Logger logger;
-    private final String SEND_URL;
+    private final TelegramContext context;
     private final Queue<Pair<String, String>> pendingMessage = new ConcurrentLinkedQueue<>();
 
-    public TelegramSender(String baseUrl, Logger logger) {
-
-        this.logger = logger;
-        this.SEND_URL = baseUrl + "/sendMessage";
+    public TelegramSender(TelegramContext context) {
+        this.logger = context.getLogger();
+        this.context = context;
     }
 
     public void sendPendingMessages() {
@@ -37,7 +37,7 @@ public class TelegramSender {
         params.add(new AbstractMap.SimpleEntry<>("text", message));
 
         try {
-            String response = HttpUtils.doPostRequest(SEND_URL, params, logger);
+            String response = HttpUtils.doPostRequest(context.getBaseUrl() + "/sendMessage", params, logger);
             if (TelegramBridgeConfig.verbose_logging) {
                 logger.info("Telegram answer >> " + response);
             }

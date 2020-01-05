@@ -1,7 +1,8 @@
 package ru.glitchless.telegrambridge.handlers;
 
-import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
 import ru.glitchless.telegrambridge.telegramapi.model.UserObject;
@@ -31,7 +32,8 @@ public class ToMinecraftResender extends BaseMessageReceiver {
 
         String textMessage = TelegramBridgeConfig.text.chatmessage_to_minecraft.replace("${nickname}", userObject.getUsername()).replace("${message}", message);
 
-        FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessage(new TextComponentString(textMessage));
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        server.getPlayerList().sendMessage(new StringTextComponent(textMessage));
         return true;
     }
 
