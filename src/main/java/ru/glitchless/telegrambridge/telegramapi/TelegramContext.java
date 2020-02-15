@@ -7,7 +7,6 @@ import ru.glitchless.telegrambridge.telegramapi.delegate.TelegramReceiver;
 import ru.glitchless.telegrambridge.telegramapi.delegate.TelegramSender;
 
 public class TelegramContext {
-    private final String BASE_URL = "https://api.telegram.org/bot" + TelegramBridgeConfig.telegram_config.api_token;
     private final Logger logger;
     private final TelegramReceiver receiver;
     private final TelegramSender sender;
@@ -15,7 +14,7 @@ public class TelegramContext {
     public TelegramContext(Logger logger) {
         this.logger = logger;
         this.receiver = new TelegramReceiver(this);
-        this.sender = new TelegramSender(BASE_URL, logger);
+        this.sender = new TelegramSender(this);
     }
 
 
@@ -40,7 +39,7 @@ public class TelegramContext {
 
 
     public String getBaseUrl() {
-        return BASE_URL;
+        return "https://api.telegram.org/bot" + TelegramBridgeConfig.telegram_config.api_token;
     }
 
     public Logger getLogger() {
