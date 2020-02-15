@@ -65,12 +65,6 @@ public class TelegramReceiver {
         if (success) {
             return;
         }
-
-        final String chatId = String.valueOf(updateObject.getMessage().getChat().getId());
-
-        final String answer = TelegramBridgeConfig.text.notfoundchat
-                .replace("${chatid}", String.valueOf(updateObject.getMessage().getChat().getId()));
-        context.sendMessage(chatId, answer);
     }
 
     public void addListener(IMessageReceiver messageReceiver) {
