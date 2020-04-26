@@ -2,12 +2,18 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'gradle.plugin.de.fuerstenau:BuildConfigPlugin:1.1.8'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'de.fuerstenau.buildconfig'
+
 
 version = "1.12.2-${project.mod_version}"
 group = "ru.glitchless.telegrambridge" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -46,6 +52,10 @@ idea {
 
 dependencies {
     compile project(":core")
+}
+
+buildConfig {
+    buildConfigField 'String', 'MOD_VERSION', project.mod_version
 }
 
 processResources {
