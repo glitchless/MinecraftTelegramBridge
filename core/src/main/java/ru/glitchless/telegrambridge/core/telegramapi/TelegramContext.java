@@ -16,8 +16,8 @@ public class TelegramContext {
     public TelegramContext(Logger logger, ConfigWrapper config) {
         this.config = config;
         this.logger = logger;
-        this.receiver = new TelegramReceiver(this, config);
         this.BASE_URL = "https://api.telegram.org/bot" + config.getTelegramApiToken();
+        this.receiver = new TelegramReceiver(this, config);
         this.sender = new TelegramSender(BASE_URL, logger, config);
     }
 

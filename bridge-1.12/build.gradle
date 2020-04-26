@@ -9,11 +9,11 @@ buildscript {
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'gradle.plugin.de.fuerstenau:BuildConfigPlugin:1.1.8'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'de.fuerstenau.buildconfig'
-
+apply plugin: "com.matthewprenger.cursegradle"
 
 version = "1.12.2-${project.mod_version}"
 group = "ru.glitchless.telegrambridge" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -50,12 +50,13 @@ idea {
     }
 }
 
-dependencies {
-    compile project(":core")
+configurations {
+    embed
+    compile.extendsFrom(embed)
 }
 
-buildConfig {
-    buildConfigField 'String', 'MOD_VERSION', project.mod_version
+dependencies {
+    embed project(":core")
 }
 
 processResources {
@@ -74,5 +75,35 @@ processResources {
     // copy everything else except the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+jar {
+    from configurations.embed.collect {
+        exclude '.classpath'
+        exclude '.project'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'module-info.class'
+        exclude 'META-INF/NOTICE'
+        it.isDirectory() ? it : zipTree(it)
+    }
+}
+
+artifacts {
+    archives jar
+}
+
+curseforge {
+    apiKey = "${CurseForgeApiToken}"
+    project {
+        id = '357271'
+        changelog = "${last_changelog}"
+        releaseType = "${mod_state}"
+        addGameVersion '1.12'
+
+        mainArtifact(jar) {
+            displayName = "TelegramBridge $project.version"
+        }
     }
 }

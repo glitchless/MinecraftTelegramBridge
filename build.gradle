@@ -12,9 +12,17 @@ buildscript {
         // in the individual module build.gradle files
     }
     ext {
-        getModVersion = {
-            return "${mod_version}"
+        getCurseForgeApi = {
+            def keystorePropertiesFile = rootProject.file("secret.properties");
+            if (!keystorePropertiesFile.exists()) {
+                return "${curseforge_api_key}"
+            }
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+            return keystoreProperties.get("curseforge_api_key", "${curseforge_api_key}")
         }
+
+        CurseForgeApiToken = getCurseForgeApi()
     }
 }
 

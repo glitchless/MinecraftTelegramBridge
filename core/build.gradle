@@ -1,9 +1,15 @@
 plugins {
     id 'java'
+    id 'de.fuerstenau.buildconfig' version '1.1.8'
+    id 'idea'
 }
 
-group 'ru.glitchless.telegrambridge'
-version '1.12.2-1.1'
+group 'ru.glitchless.telegrambridge.core'
+version "1.12.2-${project.mod_version}"
+
+buildConfig {
+    buildConfigField 'String', 'MOD_VERSION', project.mod_version
+}
 
 repositories {
     mavenCentral()
