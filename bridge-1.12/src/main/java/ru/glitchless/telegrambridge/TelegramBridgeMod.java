@@ -27,11 +27,10 @@ public class TelegramBridgeMod {
     public static final String MODID = "telegrambridge";
     public static final String NAME = "Telegram Bridge";
     public static final String UPDATE_URL = "https://www.curseforge.com/minecraft/mc-mods/telegram-bridge";
-
+    private static final ConfigWrapper config = new ConfigWrapperImpl();
     private static Logger logger;
     private static TelegramContext context;
     private static TelegramLoop telegramLoop;
-    private static final ConfigWrapper config = new ConfigWrapperImpl();
 
     public static TelegramContext getContext() {
         return context;

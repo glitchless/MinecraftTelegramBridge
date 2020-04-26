@@ -4,7 +4,7 @@ import java.io.*;
 
 public class TelegramOffsetDataHelper {
     private static Long offset = -1L;
-    private static File offsetFile = new File("telegrambridgesoffset.dat");
+    private static final File offsetFile = new File("telegrambridgesoffset.dat");
 
     public static Long getOffset() throws IOException {
         if (offset < 0) {

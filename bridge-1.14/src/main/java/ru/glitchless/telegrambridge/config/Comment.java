@@ -1,4 +1,3 @@
-
 package ru.glitchless.telegrambridge.config;
 
 import java.lang.annotation.Retention;

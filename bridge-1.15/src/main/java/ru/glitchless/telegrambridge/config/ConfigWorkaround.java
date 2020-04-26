@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class ConfigWorkaround {
     public static final String CATEGORY_GENERAL = "general";
     private static ConfigWorkaround INSTANCE = null;
-    private Map<String, ForgeConfigSpec.ConfigValue<?>> specs = new HashMap<>();
+    private final Map<String, ForgeConfigSpec.ConfigValue<?>> specs = new HashMap<>();
 
     public ConfigWorkaround(final ForgeConfigSpec.Builder builder) {
         try {

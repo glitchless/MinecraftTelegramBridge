@@ -4,8 +4,8 @@ import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
 
 public class TelegramLoop {
     private final TelegramContext context;
-    private LoopWithExpRetry receiverLoop;
-    private LoopWithExpRetry senderLoop;
+    private final LoopWithExpRetry receiverLoop;
+    private final LoopWithExpRetry senderLoop;
 
     public TelegramLoop(TelegramContext context, ConfigWrapper config) {
         this.context = context;

@@ -9,7 +9,7 @@ public class LoopWithExpRetry extends Thread {
     private final static Logger logger = Logger.getLogger(LoopWithExpRetry.class.getName());
     private final ThrowableRunnable loop;
     private int retryCounter = 0;
-    private ConfigWrapper config;
+    private final ConfigWrapper config;
 
     public LoopWithExpRetry(ThrowableRunnable loop, ConfigWrapper config) {
         this.loop = loop;
@@ -42,7 +42,7 @@ public class LoopWithExpRetry extends Thread {
         }
     }
 
-    public static interface ThrowableRunnable {
+    public interface ThrowableRunnable {
         void run() throws Exception;
     }
 }

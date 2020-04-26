@@ -31,10 +31,10 @@ public class TelegramBridgeMod {
     public static final String VERSION = "1.0";
     public static final String UPDATE_URL = "https://www.curseforge.com/minecraft/mc-mods/telegram-bridge";
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private static TelegramContext context;
     private static TelegramLoop telegramLoop;
-    private static ConfigWrapper config = new ConfigWrapperImpl();
+    private static final ConfigWrapper config = new ConfigWrapperImpl();
 
     public TelegramBridgeMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);

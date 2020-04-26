@@ -22,6 +22,13 @@ public class TelegramBridgeConfig {
 
     public static RelayMode relay_mode = TWO_SIDE;
 
+    public enum RelayMode {
+        NONE,
+        TO_MINECRAFT,
+        TO_TELEGRAM,
+        TWO_SIDE
+    }
+
     public static class TelegramConfig {
         @Config.Comment("the bot api token")
         public String api_token = "";
@@ -50,12 +57,5 @@ public class TelegramBridgeConfig {
         public String notfoundchat = "Chat `${chatid}` is not found in allowed chats. You can add it in `config/telegrambridge.cfg`";
         public String player_empty = "No one is online. Maybe it's time to fix it? :)";
         public String player_list = "*Players online*:${endline}${endline}${playerlist}${endline}Total: *${playercount}*";
-    }
-
-    public enum RelayMode {
-        NONE,
-        TO_MINECRAFT,
-        TO_TELEGRAM,
-        TWO_SIDE
     }
 }
