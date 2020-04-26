@@ -54,7 +54,7 @@ public class ConfigWorkaround {
     }
 
     @SubscribeEvent
-    public static void onReload(final ModConfig.ConfigReloading configEvent) {
+    public static void onReload(final ModConfig.Reloading configEvent) {
         if (INSTANCE != null) {
             try {
                 INSTANCE.invalidateConfig();
