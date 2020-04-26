@@ -4,8 +4,9 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import ru.glitchless.telegrambridge.TelegramBridgeMod;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
-import ru.glitchless.telegrambridge.telegramapi.model.UserObject;
+import ru.glitchless.telegrambridge.core.handlers.BaseMessageReceiver;
+import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
+import ru.glitchless.telegrambridge.core.telegramapi.model.UserObject;
 
 import javax.annotation.Nonnull;
 

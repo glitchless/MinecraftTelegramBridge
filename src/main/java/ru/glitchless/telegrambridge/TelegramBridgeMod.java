@@ -9,12 +9,14 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
+import ru.glitchless.telegrambridge.config.ConfigWrapperImpl;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
+import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
+import ru.glitchless.telegrambridge.core.telegramapi.TelegramContext;
+import ru.glitchless.telegrambridge.core.telegramapi.TelegramLoop;
 import ru.glitchless.telegrambridge.handlers.PlayerList;
 import ru.glitchless.telegrambridge.handlers.ToMinecraftResender;
 import ru.glitchless.telegrambridge.handlers.ToTelegramEvent;
-import ru.glitchless.telegrambridge.telegramapi.TelegramContext;
-import ru.glitchless.telegrambridge.telegramapi.TelegramLoop;
 
 @Mod(modid = TelegramBridgeMod.MODID,
         name = TelegramBridgeMod.NAME,
@@ -30,6 +32,7 @@ public class TelegramBridgeMod {
     private static Logger logger;
     private static TelegramContext context;
     private static TelegramLoop telegramLoop;
+    private static final ConfigWrapper config = new ConfigWrapperImpl();
 
     public static TelegramContext getContext() {
         return context;
@@ -38,7 +41,7 @@ public class TelegramBridgeMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        context = new TelegramContext(logger);
+        context = new TelegramContext(logger, config);
     }
 
     @Mod.EventHandler
@@ -47,7 +50,7 @@ public class TelegramBridgeMod {
                 && TelegramBridgeConfig.server_only) {
             return;
         }
-        telegramLoop = new TelegramLoop(context);
+        telegramLoop = new TelegramLoop(context, config);
         telegramLoop.start();
 
         context.addListener(new ToMinecraftResender());

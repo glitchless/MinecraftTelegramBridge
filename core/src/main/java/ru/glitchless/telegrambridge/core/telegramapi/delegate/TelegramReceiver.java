@@ -1,15 +1,15 @@
-package ru.glitchless.telegrambridge.telegramapi.delegate;
+package ru.glitchless.telegrambridge.core.telegramapi.delegate;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.handlers.IMessageReceiver;
-import ru.glitchless.telegrambridge.telegramapi.TelegramContext;
-import ru.glitchless.telegrambridge.telegramapi.model.TelegramAnswerObject;
-import ru.glitchless.telegrambridge.telegramapi.model.UpdateObject;
-import ru.glitchless.telegrambridge.utils.HttpUtils;
-import ru.glitchless.telegrambridge.utils.LoggerUtils;
+import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
+import ru.glitchless.telegrambridge.core.handlers.IMessageReceiver;
+import ru.glitchless.telegrambridge.core.telegramapi.TelegramContext;
+import ru.glitchless.telegrambridge.core.telegramapi.model.TelegramAnswerObject;
+import ru.glitchless.telegrambridge.core.telegramapi.model.UpdateObject;
+import ru.glitchless.telegrambridge.core.utils.HttpUtils;
+import ru.glitchless.telegrambridge.core.utils.LoggerUtils;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
@@ -23,18 +23,21 @@ public class TelegramReceiver {
     }.getType();
     private final Logger logger;
     private final TelegramContext context;
+    private final ConfigWrapper config;
     private final List<IMessageReceiver> receivers = new ArrayList<>();
 
-    public TelegramReceiver(TelegramContext context) {
-        UPDATE_URL = context.getBaseUrl() + "/getUpdates?allowed_updates=[\"message\"]&offset=%s&timeout="
-                + TelegramBridgeConfig.telegram_config.telegram_long_pooling_timeout;
+    public TelegramReceiver(TelegramContext context, ConfigWrapper config) {
+        this.config = config;
         this.logger = context.getLogger();
         this.context = context;
+        UPDATE_URL = context.getBaseUrl() + "/getUpdates?allowed_updates=[\"message\"]&offset=%s&timeout="
+                + config.getTelegramLongPoolingTimeout();
+
     }
 
     public void checkUpdate() throws Exception {
         String updateJson = HttpUtils.httpGet(String.format(UPDATE_URL, TelegramOffsetDataHelper.getOffset() + 1));
-        LoggerUtils.logInfoInternal(logger, "Get from telegram update " + updateJson);
+        LoggerUtils.logInfoInternal(logger, "Get from telegram update " + updateJson, config);
         TelegramAnswerObject<List<UpdateObject>> updates = gson.fromJson(updateJson, updateType);
 
         for (UpdateObject update : updates.getResult()) {
@@ -49,7 +52,7 @@ public class TelegramReceiver {
         }
 
         if (updateObject.getMessage() == null) {
-            LoggerUtils.logInfoInternal(logger, "I received message without message");
+            LoggerUtils.logInfoInternal(logger, "I received message without message", config);
             return;
         }
 

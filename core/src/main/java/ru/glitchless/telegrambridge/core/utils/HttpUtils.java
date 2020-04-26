@@ -1,4 +1,4 @@
-package ru.glitchless.telegrambridge.utils;
+package ru.glitchless.telegrambridge.core.utils;
 
 import org.apache.logging.log4j.Logger;
 

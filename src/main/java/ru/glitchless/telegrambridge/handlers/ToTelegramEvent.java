@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import ru.glitchless.telegrambridge.TelegramBridgeMod;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.utils.TextUtils;
+import ru.glitchless.telegrambridge.core.utils.TextUtils;
 
 import javax.annotation.Nonnull;
 

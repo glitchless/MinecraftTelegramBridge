@@ -1,29 +1,30 @@
-package ru.glitchless.telegrambridge.telegramapi.delegate;
+package ru.glitchless.telegrambridge.core.telegramapi.delegate;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.utils.HttpUtils;
+import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
+import ru.glitchless.telegrambridge.core.utils.HttpUtils;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class TelegramSender {
     private final Logger logger;
     private final String SEND_URL;
-    private final Queue<Pair<String, String>> pendingMessage = new ConcurrentLinkedQueue<>();
+    private final ConfigWrapper config;
+    private final BlockingQueue<Pair<String, String>> pendingMessage = new LinkedBlockingQueue<>();
 
-    public TelegramSender(String baseUrl, Logger logger) {
-
+    public TelegramSender(String baseUrl, Logger logger, ConfigWrapper config) {
         this.logger = logger;
         this.SEND_URL = baseUrl + "/sendMessage";
+        this.config = config;
     }
 
-    public void sendPendingMessages() {
-        Pair<String, String> message = pendingMessage.poll();
+    public void sendPendingMessages() throws InterruptedException {
+        Pair<String, String> message = pendingMessage.take();
         while (message != null) {
             sendMessageInternal(message.getKey(), message.getValue());
             message = pendingMessage.poll();
@@ -38,7 +39,7 @@ public class TelegramSender {
 
         try {
             String response = HttpUtils.doPostRequest(SEND_URL, params, logger);
-            if (TelegramBridgeConfig.verbose_logging) {
+            if (config.isVerboseLogging()) {
                 logger.info("Telegram answer >> " + response);
             }
         } catch (Exception ex) {

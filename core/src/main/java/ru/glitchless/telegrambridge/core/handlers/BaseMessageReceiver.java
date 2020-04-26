@@ -1,10 +1,9 @@
-package ru.glitchless.telegrambridge.handlers;
+package ru.glitchless.telegrambridge.core.handlers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
-import ru.glitchless.telegrambridge.telegramapi.model.UserObject;
-import ru.glitchless.telegrambridge.utils.LoggerUtils;
+import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
+import ru.glitchless.telegrambridge.core.telegramapi.model.UserObject;
 
 import javax.annotation.Nonnull;
 
@@ -21,11 +20,11 @@ public abstract class BaseMessageReceiver implements IMessageReceiver {
         String messageText = messageObject.getText();
 
         if (messageText == null || messageText.length() == 0) {
-            LoggerUtils.logInfoInternal(logger, "I received message without text");
+            logger.info("I received message without text");
             return false;
         }
         return onTelegramMessage(messageObject.getFrom(), messageText);
     }
 
-    abstract boolean onTelegramMessage(UserObject userObject, @Nonnull String message);
+    public abstract boolean onTelegramMessage(UserObject userObject, @Nonnull String message);
 }

@@ -5,7 +5,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import ru.glitchless.telegrambridge.TelegramBridgeMod;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
+import ru.glitchless.telegrambridge.core.handlers.IMessageReceiver;
+import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

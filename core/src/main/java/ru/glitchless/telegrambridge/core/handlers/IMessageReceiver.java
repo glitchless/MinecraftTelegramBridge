@@ -1,6 +1,6 @@
-package ru.glitchless.telegrambridge.handlers;
+package ru.glitchless.telegrambridge.core.handlers;
 
-import ru.glitchless.telegrambridge.telegramapi.model.MessageObject;
+import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
 
 import javax.annotation.Nonnull;
 

@@ -1,4 +1,4 @@
-package ru.glitchless.telegrambridge.telegramapi.model;
+package ru.glitchless.telegrambridge.core.telegramapi.model;
 
 import com.google.gson.annotations.SerializedName;
 

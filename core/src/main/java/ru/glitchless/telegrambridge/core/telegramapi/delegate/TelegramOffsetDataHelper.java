@@ -1,4 +1,4 @@
-package ru.glitchless.telegrambridge.telegramapi.delegate;
+package ru.glitchless.telegrambridge.core.telegramapi.delegate;
 
 import java.io.*;
 
