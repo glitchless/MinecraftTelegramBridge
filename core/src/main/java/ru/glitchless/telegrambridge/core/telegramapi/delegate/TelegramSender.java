@@ -27,7 +27,7 @@ public class TelegramSender {
         Pair<String, String> message = pendingMessage.take();
         while (message != null) {
             sendMessageInternal(message.getKey(), message.getValue());
-            message = pendingMessage.poll();
+            message = pendingMessage.take();
         }
     }
 
