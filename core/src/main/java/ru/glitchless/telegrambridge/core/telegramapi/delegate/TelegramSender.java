@@ -38,7 +38,7 @@ public class TelegramSender {
         params.add(new AbstractMap.SimpleEntry<>("text", message));
 
         try {
-            String response = HttpUtils.doPostRequest(SEND_URL, params, logger);
+            String response = HttpUtils.doPostRequest(SEND_URL, params, logger, config.getProxy());
             if (config.isVerboseLogging()) {
                 logger.info("Telegram answer >> " + response);
             }

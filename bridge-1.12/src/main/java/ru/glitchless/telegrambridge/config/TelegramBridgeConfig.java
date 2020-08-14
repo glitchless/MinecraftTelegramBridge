@@ -1,6 +1,7 @@
 package ru.glitchless.telegrambridge.config;
 
 import net.minecraftforge.common.config.Config;
+import java.net.Proxy;
 
 import static ru.glitchless.telegrambridge.TelegramBridgeMod.MODID;
 import static ru.glitchless.telegrambridge.config.TelegramBridgeConfig.RelayMode.TWO_SIDE;
@@ -10,6 +11,7 @@ public class TelegramBridgeConfig {
     public static TelegramConfig telegram_config = new TelegramConfig();
     public static RelayLevel relay_level = new RelayLevel();
     public static Text text = new Text();
+    public static ProxyConfig proxy = new ProxyConfig();
 
     @Config.Comment("list of telegram chats that messages will be relayed to")
     public static String[] chat_ids = new String[]{"-1", "-2"};
@@ -57,5 +59,11 @@ public class TelegramBridgeConfig {
         public String notfoundchat = "Chat `${chatid}` is not found in allowed chats. You can add it in `config/telegrambridge.cfg`";
         public String player_empty = "No one is online. Maybe it's time to fix it? :)";
         public String player_list = "*Players online*:${endline}${endline}${playerlist}${endline}Total: *${playercount}*";
+    }
+
+    public static class ProxyConfig {
+        public Proxy.Type proxy = Proxy.Type.DIRECT;
+        public String addr = "";
+        public int port = 0;
     }
 }

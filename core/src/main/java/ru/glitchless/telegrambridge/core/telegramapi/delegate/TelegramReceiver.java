@@ -36,7 +36,7 @@ public class TelegramReceiver {
     }
 
     public void checkUpdate() throws Exception {
-        String updateJson = HttpUtils.httpGet(String.format(UPDATE_URL, TelegramOffsetDataHelper.getOffset() + 1));
+        String updateJson = HttpUtils.httpGet(String.format(UPDATE_URL, TelegramOffsetDataHelper.getOffset() + 1), config.getProxy());
         LoggerUtils.logInfoInternal(logger, "Get from telegram update " + updateJson, config);
         TelegramAnswerObject<List<UpdateObject>> updates = gson.fromJson(updateJson, updateType);
 

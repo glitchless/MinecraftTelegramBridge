@@ -15,12 +15,13 @@ public class HttpUtils {
      * Executes a simple HTTP-GET request
      *
      * @param url URL to request
+     * @param proxy proxy of request
      * @return The result of request
      * @throws Exception I/O Exception or HTTP errors
      */
-    public static String httpGet(String url) throws Exception {
+    public static String httpGet(String url, Proxy proxy) throws Exception {
         URL u = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) u.openConnection(proxy);
         InputStream is = connection.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line;
@@ -32,15 +33,19 @@ public class HttpUtils {
         return response.toString();
     }
 
+    public static String httpGet(String url) throws Exception {
+        return httpGet(url);
+    }
+
     @Nullable
-    public static String doPostRequest(String baseUrl, List<AbstractMap.SimpleEntry<String, Object>> params, Logger logger) throws IOException {
+    public static String doPostRequest(String baseUrl, List<AbstractMap.SimpleEntry<String, Object>> params, Logger logger, Proxy proxy) throws IOException {
         HttpURLConnection connection = null;
         OutputStream os = null;
         InputStream is = null;
         try {
             byte[] postDataBytes = getQuery(params).getBytes(StandardCharsets.UTF_8);
 
-            connection = (HttpURLConnection) new URL(baseUrl).openConnection();
+            connection = (HttpURLConnection) new URL(baseUrl).openConnection(proxy);
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -81,6 +86,10 @@ public class HttpUtils {
         }
     }
 
+    public static String doPostRequest(String baseUrl, List<AbstractMap.SimpleEntry<String, Object>> params, Logger logger) throws IOException {
+        return doPostRequest(baseUrl, params, logger, Proxy.NO_PROXY);
+    }
+
     private static String getQuery(List<AbstractMap.SimpleEntry<String, Object>> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
@@ -99,10 +108,10 @@ public class HttpUtils {
         return result.toString();
     }
 
-    public static boolean isAvailable(String address) {
+    public static boolean isAvailable(String address, Proxy proxy) {
         try {
             final URL url = new URL(address);
-            final URLConnection conn = url.openConnection();
+            final URLConnection conn = url.openConnection(proxy);
             conn.connect();
             conn.getInputStream().close();
             return true;
@@ -111,5 +120,9 @@ public class HttpUtils {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public static boolean isAvailable(String address) {
+        return isAvailable(address, Proxy.NO_PROXY);
     }
 }
