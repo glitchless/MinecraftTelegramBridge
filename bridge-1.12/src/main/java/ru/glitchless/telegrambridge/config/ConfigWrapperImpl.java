@@ -22,11 +22,10 @@ public class ConfigWrapperImpl implements ConfigWrapper {
 
     @Override
     public Proxy getProxy() {
-        if(TelegramBridgeConfig.proxy.proxy == Proxy.Type.DIRECT)
-        {
+        if(TelegramBridgeConfig.proxy.proxy == Proxy.Type.DIRECT) {
             return Proxy.NO_PROXY;
-        }
-        else
+        } else {
             return new Proxy(TelegramBridgeConfig.proxy.proxy, new InetSocketAddress(TelegramBridgeConfig.proxy.addr, TelegramBridgeConfig.proxy.port));
+        }
     }
 }
