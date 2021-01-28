@@ -22,3 +22,5 @@ eclipse
 run
 
 secret.properties
+
+**/*.log
