@@ -1,6 +1,7 @@
 package ru.glitchless.telegrambridge.core.utils;
 
 import org.apache.logging.log4j.Logger;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 
 import javax.annotation.Nullable;
 import java.io.*;
@@ -20,7 +21,7 @@ public class HttpUtils {
      */
     public static String httpGet(String url) throws Exception {
         URL u = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) u.openConnection(getProxy());
         InputStream is = connection.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line;
@@ -40,7 +41,7 @@ public class HttpUtils {
         try {
             byte[] postDataBytes = getQuery(params).getBytes(StandardCharsets.UTF_8);
 
-            connection = (HttpURLConnection) new URL(baseUrl).openConnection();
+            connection = (HttpURLConnection) new URL(baseUrl).openConnection(getProxy());
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -102,7 +103,7 @@ public class HttpUtils {
     public static boolean isAvailable(String address) {
         try {
             final URL url = new URL(address);
-            final URLConnection conn = url.openConnection();
+            final URLConnection conn = url.openConnection(getProxy());
             conn.connect();
             conn.getInputStream().close();
             return true;
@@ -110,6 +111,14 @@ public class HttpUtils {
             throw new RuntimeException(e);
         } catch (IOException e) {
             return false;
+        }
+    }
+
+    public static Proxy getProxy() {
+        if (TelegramBridgeConfig.proxy.proxy == Proxy.Type.DIRECT) {
+            return Proxy.NO_PROXY;
+        } else {
+            return new Proxy(TelegramBridgeConfig.proxy.proxy, new InetSocketAddress(TelegramBridgeConfig.proxy.addr, TelegramBridgeConfig.proxy.port));
         }
     }
 }

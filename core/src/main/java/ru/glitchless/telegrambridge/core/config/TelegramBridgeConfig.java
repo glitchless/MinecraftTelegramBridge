@@ -1,5 +1,6 @@
 package ru.glitchless.telegrambridge.core.config;
 
+import java.net.Proxy;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class TelegramBridgeConfig {
     public static TelegramConfig telegram_config = new TelegramConfig();
     public static RelayLevel relay_level = new RelayLevel();
     public static Text text = new Text();
+    public static ProxyConfig proxy = new ProxyConfig();
 
     @Comment("List of telegram chats that messages will be relayed to")
     public static List<String> chat_ids = Collections.singletonList("-1");
@@ -52,5 +54,11 @@ public class TelegramBridgeConfig {
         public String notfoundchat = "Chat `${chatid}` is not found in allowed chats. You can add it in `config/telegrambridge.cfg`";
         public String player_empty = "No one is online. Maybe it's time to fix it? :)";
         public String player_list = "*Players online*:${endline}${endline}${playerlist}${endline}Total: *${playercount}*";
+    }
+
+    public static class ProxyConfig {
+        public Proxy.Type proxy = Proxy.Type.DIRECT;
+        public String addr = "";
+        public int port = 0;
     }
 }
