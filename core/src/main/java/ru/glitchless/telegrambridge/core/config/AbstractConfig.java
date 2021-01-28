@@ -9,9 +9,7 @@ public interface AbstractConfig {
      */
     Object getValue(ConfigPath path);
 
-    void setList(ConfigPath path, List<?> value);
+    void setList(ConfigPath path, List<?> value, String... comment);
 
-    void setComment(ConfigPath path, String... comment);
-
-    void setValue(ConfigPath path, Object value);
+    void setValue(ConfigPath path, Object value, String... comment);
 }

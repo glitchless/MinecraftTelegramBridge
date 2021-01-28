@@ -54,19 +54,21 @@ public class ConfigWorkaround {
 
     private static void addFieldToConfig(ConfigPath path, Field field, Object obj) throws IllegalAccessException {
         final ConfigPath currentPath = new ConfigPath(path, field.getName());
-        final Comment comment = field.getAnnotation(Comment.class);
-        if (comment != null) {
-            abstractConfig.setComment(path, comment.value());
+        //abstractConfig.setComment(path, "");
+        final Comment commentAnnotation = field.getAnnotation(Comment.class);
+        String comment = null;
+        if (commentAnnotation != null) {
+            comment = commentAnnotation.value();
         }
         if (field.getType().isAssignableFrom(List.class)) {
             abstractConfig.setList(currentPath,
-                    (List<?>) field.getType().cast(field.get(obj)));
+                    (List<?>) field.getType().cast(field.get(obj)), comment);
             //field.set(obj, spec.get());
         } else if (field.getType() == String.class) {
-            abstractConfig.setValue(currentPath, field.get(obj));
+            abstractConfig.setValue(currentPath, field.get(obj), comment);
             //field.set(obj, spec.get().toString());
         } else if (field.getType() == boolean.class) {
-            abstractConfig.setValue(currentPath, field.get(obj));
+            abstractConfig.setValue(currentPath, field.get(obj), comment);
             //field.set(obj, spec.get());
         } else if (field.getType().isEnum()) {
             List<String> comments = new ArrayList<>();
@@ -74,10 +76,9 @@ public class ConfigWorkaround {
             for (Object enumObj : field.getType().getEnumConstants()) {
                 comments.add(((Enum<?>) enumObj).name());
             }
-            abstractConfig.setComment(currentPath, comments.toArray(new String[]{}));
 
             Enum<?> enumField = (Enum<?>) field.getType().cast(field.get(obj));
-            abstractConfig.setComment(currentPath, enumField.name());
+            abstractConfig.setValue(currentPath, enumField.name(), comments.toArray(new String[]{}));
             //field.set(obj, Enum.valueOf((Class<Enum>) field.getType(), spec.get().toString()));
         } else if (field.getType().isAssignableFrom(Number.class)) {
             abstractConfig.setValue(currentPath, field.get(obj));
@@ -99,6 +100,10 @@ public class ConfigWorkaround {
     private static void invalidateConfig(ConfigPath path, Field field, Object obj) throws IllegalAccessException {
         final ConfigPath currentPath = new ConfigPath(path, field.getName());
         final Object configValue = abstractConfig.getValue(currentPath);
+
+        if (configValue == null) {
+            return;
+        }
 
         if (field.getType().isAssignableFrom(List.class)) {
             setIfNotNull(field, obj, configValue);

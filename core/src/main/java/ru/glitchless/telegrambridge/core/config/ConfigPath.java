@@ -16,6 +16,9 @@ public class ConfigPath {
     public ConfigPath(@Nullable ConfigPath root, String name) {
         this.parent = root;
         this.name = name;
+        if (getLevel() > 10) {
+            throw new RuntimeException("");
+        }
     }
 
     public String getName() {
@@ -27,13 +30,6 @@ public class ConfigPath {
         return parent;
     }
 
-    public int getLevel() {
-        if (parent == null) {
-            return 1;
-        }
-        return parent.getLevel() + 1;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,9 +38,20 @@ public class ConfigPath {
         return Objects.equals(parent, that.parent) && name.equals(that.name);
     }
 
+    public int getLevel() {
+        if (parent == null) {
+            return 1;
+        }
+        return parent.getLevel() + 1;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(parent, name);
+        try {
+            return Objects.hash(parent, name);
+        } catch (StackOverflowError error) {
+            throw error;
+        }
     }
 
     @Override

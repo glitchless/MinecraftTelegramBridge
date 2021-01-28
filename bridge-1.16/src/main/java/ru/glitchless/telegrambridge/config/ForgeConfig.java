@@ -7,6 +7,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import ru.glitchless.telegrambridge.core.config.AbstractConfig;
 import ru.glitchless.telegrambridge.core.config.ConfigPath;
 import ru.glitchless.telegrambridge.core.config.ConfigWorkaround;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 
 import javax.annotation.Nullable;
 import java.nio.file.Path;
@@ -14,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static ru.glitchless.telegrambridge.core.utils.ArrayUtils.isNullOrContainsNull;
 
 public class ForgeConfig implements AbstractConfig {
     private final Map<ConfigPath, ForgeConfigSpec.ConfigValue<?>> specs = new HashMap<>();
@@ -39,6 +42,9 @@ public class ForgeConfig implements AbstractConfig {
         configData.load();
         forgeConfigSpec.setConfig(configData);
         ConfigWorkaround.onReload();
+
+        int test = TelegramBridgeConfig.telegram_config.telegram_long_pooling_timeout;
+        System.out.println(test);
     }
 
     @Override
@@ -51,42 +57,34 @@ public class ForgeConfig implements AbstractConfig {
     }
 
     @Override
-    public void setList(ConfigPath path, List<?> value) {
+    public void setList(ConfigPath path, List<?> value, String... comment) {
         int level = pushTo(path.getParent());
+        if (!isNullOrContainsNull(comment)) {
+            builder.comment(comment);
+        }
         final ForgeConfigSpec.ConfigValue<?> configValue = builder.define(path.getName(), value, Objects::nonNull);
         specs.put(path, configValue);
-        pop(level);
+        builder.pop(level);
     }
 
     @Override
-    public void setComment(ConfigPath path, String... comment) {
+    public void setValue(ConfigPath path, Object value, String... comment) {
         int level = pushTo(path.getParent());
-        builder.push(path.getName());
-        //TODO builder.comment(comment);
-        builder.pop();
-        pop(level);
-    }
-
-    @Override
-    public void setValue(ConfigPath path, Object value) {
-        int level = pushTo(path.getParent());
+        if (!isNullOrContainsNull(comment)) {
+            builder.comment(comment);
+        }
         final ForgeConfigSpec.ConfigValue<?> configValue = builder.define(path.getName(), value);
         specs.put(path, configValue);
-        pop(level);
+
+        builder.pop(level);
     }
 
     private int pushTo(@Nullable ConfigPath path) {
-        if (path == null || path.getParent() == null) {
+        if (path == null) {
             return 0;
         }
         int level = pushTo(path.getParent());
         builder.push(path.getName());
         return level + 1;
-    }
-
-    private void pop(int level) {
-        for (int i = 0; i < level; i++) {
-            builder.pop();
-        }
     }
 }
