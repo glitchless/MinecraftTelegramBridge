@@ -46,7 +46,6 @@ public class ConfigWorkaround {
 
     private static void createConfig() throws IllegalAccessException {
         Class<TelegramBridgeConfig> clazz = TelegramBridgeConfig.class;
-        abstractConfig.setComment(CATEGORY_GENERAL, "General settings");
 
         for (Field field : clazz.getDeclaredFields()) {
             addFieldToConfig(CATEGORY_GENERAL, field, null);
@@ -55,7 +54,6 @@ public class ConfigWorkaround {
 
     private static void addFieldToConfig(ConfigPath path, Field field, Object obj) throws IllegalAccessException {
         final ConfigPath currentPath = new ConfigPath(path, field.getName());
-        abstractConfig.setComment(path, "");
         final Comment comment = field.getAnnotation(Comment.class);
         if (comment != null) {
             abstractConfig.setComment(path, comment.value());
