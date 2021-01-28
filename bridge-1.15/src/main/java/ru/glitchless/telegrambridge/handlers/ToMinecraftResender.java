@@ -3,7 +3,7 @@ package ru.glitchless.telegrambridge.handlers;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
-import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.handlers.BaseMessageReceiver;
 import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
 import ru.glitchless.telegrambridge.core.telegramapi.model.UserObject;
