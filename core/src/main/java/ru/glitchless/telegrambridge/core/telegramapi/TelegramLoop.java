@@ -1,9 +1,12 @@
 package ru.glitchless.telegrambridge.core.telegramapi;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class TelegramLoop {
     private final TelegramContext context;
     private final LoopWithExpRetry receiverLoop;
     private final LoopWithExpRetry senderLoop;
+    private final AtomicBoolean started = new AtomicBoolean(false);
 
     public TelegramLoop(TelegramContext context) {
         this.context = context;
@@ -22,7 +25,9 @@ public class TelegramLoop {
     }
 
     public void start() {
-        receiverLoop.start();
-        senderLoop.start();
+        if (!started.getAndSet(true)) {
+            receiverLoop.start();
+            senderLoop.start();
+        }
     }
 }

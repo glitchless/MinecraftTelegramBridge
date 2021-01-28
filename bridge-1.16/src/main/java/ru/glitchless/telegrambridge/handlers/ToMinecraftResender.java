@@ -43,14 +43,4 @@ public class ToMinecraftResender extends BaseMessageReceiver {
         }
         return true;
     }
-
-    private boolean findChatId(String chatId) {
-        for (String id : TelegramBridgeConfig.chat_ids) {
-            if (id.equals(chatId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
