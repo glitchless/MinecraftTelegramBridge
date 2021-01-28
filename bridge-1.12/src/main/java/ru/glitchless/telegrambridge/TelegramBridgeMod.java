@@ -9,9 +9,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.config.ConfigWrapperImpl;
 import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
 import ru.glitchless.telegrambridge.core.telegramapi.TelegramContext;
 import ru.glitchless.telegrambridge.core.telegramapi.TelegramLoop;
 import ru.glitchless.telegrambridge.handlers.PlayerList;
@@ -27,7 +25,6 @@ public class TelegramBridgeMod {
     public static final String MODID = "telegrambridge";
     public static final String NAME = "Telegram Bridge";
     public static final String UPDATE_URL = "https://www.curseforge.com/minecraft/mc-mods/telegram-bridge";
-    private static final ConfigWrapper config = new ConfigWrapperImpl();
     private static Logger logger;
     private static TelegramContext context;
     private static TelegramLoop telegramLoop;
@@ -39,7 +36,7 @@ public class TelegramBridgeMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        context = new TelegramContext(logger, config);
+        context = new TelegramContext(logger);
     }
 
     @Mod.EventHandler
@@ -48,7 +45,7 @@ public class TelegramBridgeMod {
                 && TelegramBridgeConfig.server_only) {
             return;
         }
-        telegramLoop = new TelegramLoop(context, config);
+        telegramLoop = new TelegramLoop(context);
         telegramLoop.start();
 
         context.addListener(new ToMinecraftResender());

@@ -1,9 +1,7 @@
-package ru.glitchless.telegrambridge.config;
+package ru.glitchless.telegrambridge.core.config;
 
 import java.util.Collections;
 import java.util.List;
-
-import static ru.glitchless.telegrambridge.config.TelegramBridgeConfig.RelayMode.TWO_SIDE;
 
 
 public class TelegramBridgeConfig {
@@ -17,7 +15,7 @@ public class TelegramBridgeConfig {
     @Comment("Verbose logging for telegram")
     public static boolean verbose_logging = false;
 
-    public static RelayMode relay_mode = TWO_SIDE;
+    public static RelayMode relay_mode = RelayMode.TWO_SIDE;
 
     public enum RelayMode {
         NONE,

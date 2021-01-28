@@ -3,7 +3,7 @@ package ru.glitchless.telegrambridge.core.telegramapi.delegate;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.handlers.IMessageReceiver;
 import ru.glitchless.telegrambridge.core.telegramapi.TelegramContext;
 import ru.glitchless.telegrambridge.core.telegramapi.model.TelegramAnswerObject;
@@ -23,21 +23,19 @@ public class TelegramReceiver {
     }.getType();
     private final Logger logger;
     private final TelegramContext context;
-    private final ConfigWrapper config;
     private final List<IMessageReceiver> receivers = new ArrayList<>();
 
-    public TelegramReceiver(TelegramContext context, ConfigWrapper config) {
-        this.config = config;
+    public TelegramReceiver(TelegramContext context) {
         this.logger = context.getLogger();
         this.context = context;
         UPDATE_URL = context.getBaseUrl() + "/getUpdates?allowed_updates=[\"message\"]&offset=%s&timeout="
-                + config.getTelegramLongPoolingTimeout();
+                + TelegramBridgeConfig.telegram_config.telegram_long_pooling_timeout;
 
     }
 
     public void checkUpdate() throws Exception {
         String updateJson = HttpUtils.httpGet(String.format(UPDATE_URL, TelegramOffsetDataHelper.getOffset() + 1));
-        LoggerUtils.logInfoInternal(logger, "Get from telegram update " + updateJson, config);
+        LoggerUtils.logInfoInternal(logger, "Get from telegram update " + updateJson);
         TelegramAnswerObject<List<UpdateObject>> updates = gson.fromJson(updateJson, updateType);
 
         for (UpdateObject update : updates.getResult()) {
@@ -52,7 +50,7 @@ public class TelegramReceiver {
         }
 
         if (updateObject.getMessage() == null) {
-            LoggerUtils.logInfoInternal(logger, "I received message without message", config);
+            LoggerUtils.logInfoInternal(logger, "I received message without message");
             return;
         }
 

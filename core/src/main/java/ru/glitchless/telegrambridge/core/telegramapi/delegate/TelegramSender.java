@@ -2,7 +2,7 @@ package ru.glitchless.telegrambridge.core.telegramapi.delegate;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.utils.HttpUtils;
 
 import java.util.AbstractMap;
@@ -14,13 +14,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TelegramSender {
     private final Logger logger;
     private final String SEND_URL;
-    private final ConfigWrapper config;
     private final BlockingQueue<Pair<String, String>> pendingMessage = new LinkedBlockingQueue<>();
 
-    public TelegramSender(String baseUrl, Logger logger, ConfigWrapper config) {
+    public TelegramSender(String baseUrl, Logger logger) {
         this.logger = logger;
         this.SEND_URL = baseUrl + "/sendMessage";
-        this.config = config;
     }
 
     public void sendPendingMessages() throws InterruptedException {
@@ -39,7 +37,7 @@ public class TelegramSender {
 
         try {
             String response = HttpUtils.doPostRequest(SEND_URL, params, logger);
-            if (config.isVerboseLogging()) {
+            if (TelegramBridgeConfig.verbose_logging) {
                 logger.info("Telegram answer >> " + response);
             }
         } catch (Exception ex) {

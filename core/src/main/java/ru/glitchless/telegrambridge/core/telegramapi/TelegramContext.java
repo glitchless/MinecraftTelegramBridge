@@ -1,7 +1,7 @@
 package ru.glitchless.telegrambridge.core.telegramapi;
 
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.handlers.IMessageReceiver;
 import ru.glitchless.telegrambridge.core.telegramapi.delegate.TelegramReceiver;
 import ru.glitchless.telegrambridge.core.telegramapi.delegate.TelegramSender;
@@ -11,14 +11,12 @@ public class TelegramContext {
     private final Logger logger;
     private final TelegramReceiver receiver;
     private final TelegramSender sender;
-    private final ConfigWrapper config;
 
-    public TelegramContext(Logger logger, ConfigWrapper config) {
-        this.config = config;
+    public TelegramContext(Logger logger) {
         this.logger = logger;
-        this.BASE_URL = "https://api.telegram.org/bot" + config.getTelegramApiToken();
-        this.receiver = new TelegramReceiver(this, config);
-        this.sender = new TelegramSender(BASE_URL, logger, config);
+        this.BASE_URL = "https://api.telegram.org/bot" + TelegramBridgeConfig.telegram_config.api_token;
+        this.receiver = new TelegramReceiver(this);
+        this.sender = new TelegramSender(BASE_URL, logger);
     }
 
 
