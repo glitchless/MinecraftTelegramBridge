@@ -41,14 +41,4 @@ public class ToMinecraftResender extends BaseMessageReceiver {
         server.getPlayerList().sendMessage(new StringTextComponent(textMessage));
         return true;
     }
-
-    private boolean findChatId(String chatId) {
-        for (String id : TelegramBridgeConfig.chat_ids) {
-            if (id.equals(chatId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
