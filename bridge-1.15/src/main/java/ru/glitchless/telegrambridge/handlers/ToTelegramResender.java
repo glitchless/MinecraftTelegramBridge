@@ -3,7 +3,7 @@ package ru.glitchless.telegrambridge.handlers;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 
 import static ru.glitchless.telegrambridge.handlers.ToTelegramEvent.broadcastToChats;
 

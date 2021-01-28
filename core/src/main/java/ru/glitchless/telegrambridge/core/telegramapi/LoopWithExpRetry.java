@@ -1,6 +1,6 @@
 package ru.glitchless.telegrambridge.core.telegramapi;
 
-import ru.glitchless.telegrambridge.core.config.ConfigWrapper;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,11 +9,9 @@ public class LoopWithExpRetry extends Thread {
     private final static Logger logger = Logger.getLogger(LoopWithExpRetry.class.getName());
     private final ThrowableRunnable loop;
     private int retryCounter = 0;
-    private final ConfigWrapper config;
 
-    public LoopWithExpRetry(ThrowableRunnable loop, ConfigWrapper config) {
+    public LoopWithExpRetry(ThrowableRunnable loop) {
         this.loop = loop;
-        this.config = config;
     }
 
     @Override
@@ -24,7 +22,7 @@ public class LoopWithExpRetry extends Thread {
                 retryCounter = 0;
             } catch (Exception ex) {
                 double timeout = Math.exp(retryCounter);
-                if (config.isVerboseLogging()) {
+                if (TelegramBridgeConfig.verbose_logging) {
                     logger.log(Level.WARNING, "Failed retry " + retryCounter + ". Sleep: " + timeout, ex);
                     ex.printStackTrace();
                 }

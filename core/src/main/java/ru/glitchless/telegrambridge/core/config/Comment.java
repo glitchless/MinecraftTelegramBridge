@@ -1,4 +1,4 @@
-package ru.glitchless.telegrambridge.config;
+package ru.glitchless.telegrambridge.core.config;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
