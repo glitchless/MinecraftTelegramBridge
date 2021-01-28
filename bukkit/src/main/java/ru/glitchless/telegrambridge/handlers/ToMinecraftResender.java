@@ -1,14 +1,15 @@
 package ru.glitchless.telegrambridge.handlers;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.handlers.BaseMessageReceiver;
 import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
 import ru.glitchless.telegrambridge.core.telegramapi.model.UserObject;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ToMinecraftResender extends BaseMessageReceiver {
     @Override
@@ -33,8 +34,10 @@ public class ToMinecraftResender extends BaseMessageReceiver {
 
         String textMessage = TelegramBridgeConfig.text.chatmessage_to_minecraft.replace("${nickname}", userObject.getUsername()).replace("${message}", message);
 
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        server.getPlayerList().sendMessage(new StringTextComponent(textMessage));
+        final List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        for (Player player : players) {
+            player.sendMessage(textMessage);
+        }
         return true;
     }
 }

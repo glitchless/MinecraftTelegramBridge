@@ -2,6 +2,7 @@ package ru.glitchless.telegrambridge.core.handlers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
 import ru.glitchless.telegrambridge.core.telegramapi.model.UserObject;
 
@@ -27,4 +28,14 @@ public abstract class BaseMessageReceiver implements IMessageReceiver {
     }
 
     public abstract boolean onTelegramMessage(UserObject userObject, @Nonnull String message);
+
+
+    public boolean findChatId(String chatId) {
+        for (String id : TelegramBridgeConfig.chat_ids) {
+            if (id.equals(chatId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
