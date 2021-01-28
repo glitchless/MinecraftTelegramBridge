@@ -3,4 +3,5 @@ include 'bridge-1.12'
 include 'bridge-1.14'
 include 'bridge-1.15'
 include 'bridge-1.16'
+include 'bukkit'
 

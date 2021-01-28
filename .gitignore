@@ -24,3 +24,4 @@ run
 secret.properties
 
 **/*.log
+**/.DS_Store
