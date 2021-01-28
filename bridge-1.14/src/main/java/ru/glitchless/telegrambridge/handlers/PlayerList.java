@@ -4,7 +4,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import ru.glitchless.telegrambridge.TelegramBridgeMod;
-import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.handlers.IMessageReceiver;
 import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
 

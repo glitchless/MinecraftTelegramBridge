@@ -1,6 +1,5 @@
 package ru.glitchless.telegrambridge;
 
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -10,12 +9,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.glitchless.telegrambridge.config.TelegramBridgeConfig;
-import ru.glitchless.telegrambridge.core.config.ConfigWorkaround;
+import ru.glitchless.telegrambridge.config.ForgeConfig;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.telegramapi.TelegramContext;
 import ru.glitchless.telegrambridge.core.telegramapi.TelegramLoop;
 import ru.glitchless.telegrambridge.handlers.PlayerList;
@@ -34,9 +31,7 @@ public class TelegramBridgeMod {
     public TelegramBridgeMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
-
-        Pair<ConfigWorkaround, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ConfigWorkaround::new);
-        ConfigWorkaround.loadConfig(specPair.getRight(), FMLPaths.CONFIGDIR.get().resolve(MODID + ".toml"));
+        ForgeConfig.initConfig(MODID);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

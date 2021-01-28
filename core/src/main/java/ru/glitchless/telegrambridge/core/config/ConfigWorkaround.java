@@ -101,10 +101,6 @@ public class ConfigWorkaround {
         final ConfigPath currentPath = new ConfigPath(path, field.getName());
         final Object configValue = abstractConfig.getValue(currentPath);
 
-        if (configValue == null) {
-            return;
-        }
-
         if (field.getType().isAssignableFrom(List.class)) {
             setIfNotNull(field, obj, configValue);
         } else if (field.getType() == String.class) {
