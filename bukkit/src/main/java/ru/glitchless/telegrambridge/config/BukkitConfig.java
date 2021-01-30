@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import ru.glitchless.telegrambridge.core.config.AbstractConfig;
 import ru.glitchless.telegrambridge.core.config.ConfigPath;
 import ru.glitchless.telegrambridge.core.config.ConfigWorkaround;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class BukkitConfig implements AbstractConfig {
 
     public static void init(FileConfiguration config) {
         final BukkitConfig wrapper = new BukkitConfig(config);
-        ConfigWorkaround.init(wrapper);
+        ConfigWorkaround.init(wrapper, TelegramBridgeConfig.class);
         ConfigWorkaround.onReload();
     }
 

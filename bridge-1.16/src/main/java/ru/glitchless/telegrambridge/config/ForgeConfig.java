@@ -7,6 +7,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import ru.glitchless.telegrambridge.core.config.AbstractConfig;
 import ru.glitchless.telegrambridge.core.config.ConfigPath;
 import ru.glitchless.telegrambridge.core.config.ConfigWorkaround;
+import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 
 import javax.annotation.Nullable;
 import java.nio.file.Path;
@@ -28,7 +29,7 @@ public class ForgeConfig implements AbstractConfig {
     public static void initConfig(String modid) {
         final ForgeConfigSpec.Builder configBuilder = new ForgeConfigSpec.Builder();
         final AbstractConfig abstractConfig = new ForgeConfig(configBuilder);
-        ConfigWorkaround.init(abstractConfig);
+        ConfigWorkaround.init(abstractConfig, TelegramBridgeConfig.class);
         final ForgeConfigSpec forgeConfigSpec = configBuilder.build();
         final Path configPath = FMLPaths.CONFIGDIR.get().resolve(modid + ".toml");
 

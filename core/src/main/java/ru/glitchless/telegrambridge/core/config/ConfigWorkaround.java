@@ -9,13 +9,12 @@ import java.util.Map;
 
 public class ConfigWorkaround {
     public static final ConfigPath CATEGORY_GENERAL = new ConfigPath("general");
-    private static Map<String, Object> specs = new HashMap<>();
     private static AbstractConfig abstractConfig;
 
-    public static void init(AbstractConfig clientConfig) {
+    public static void init(AbstractConfig clientConfig, Class<?> clazz) {
         try {
             abstractConfig = clientConfig;
-            createConfig();
+            createConfig(clazz);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -23,15 +22,13 @@ public class ConfigWorkaround {
 
     public static void onReload() {
         try {
-            invalidateConfig();
+            invalidateConfig(TelegramBridgeConfig.class);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
-    public static void invalidateConfig() throws IllegalAccessException {
-        Class<TelegramBridgeConfig> clazz = TelegramBridgeConfig.class;
-
+    public static void invalidateConfig(Class<?> clazz) throws IllegalAccessException {
         for (Field field : clazz.getDeclaredFields()) {
             invalidateConfig(CATEGORY_GENERAL, field, null);
         }
@@ -44,9 +41,7 @@ public class ConfigWorkaround {
         field.set(objForSet, value);
     }
 
-    private static void createConfig() throws IllegalAccessException {
-        Class<TelegramBridgeConfig> clazz = TelegramBridgeConfig.class;
-
+    private static void createConfig(Class<?> clazz) throws IllegalAccessException {
         for (Field field : clazz.getDeclaredFields()) {
             addFieldToConfig(CATEGORY_GENERAL, field, null);
         }
