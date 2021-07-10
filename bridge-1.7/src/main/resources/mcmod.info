@@ -1,0 +1,16 @@
+[
+{
+  "modid": "telegrambridge",
+  "name": "Telegram Bridge",
+  "description": "Bridge between game and real world",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["lionzxy"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
