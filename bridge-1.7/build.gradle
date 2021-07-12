@@ -13,7 +13,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
+        classpath('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
             changing = true
         }
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
@@ -62,7 +62,12 @@ configurations {
 }
 
 dependencies {
-    embed project(":core")
+    embed "com.googlecode.json-simple:json-simple:1.1.1"
+    embed "com.cedarsoftware:json-io:4.12.0"
+
+    embed(project(":core")) {
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-api'
+    }
 }
 
 jar {

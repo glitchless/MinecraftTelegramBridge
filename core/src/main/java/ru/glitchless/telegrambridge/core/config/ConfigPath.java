@@ -1,6 +1,8 @@
 package ru.glitchless.telegrambridge.core.config;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class ConfigPath {
@@ -28,6 +30,21 @@ public class ConfigPath {
     @Nullable
     public ConfigPath getParent() {
         return parent;
+    }
+
+    /**
+     * @return list of config paths.
+     * Map linked list to array list
+     */
+    public ArrayList<ConfigPath> flatten() {
+        final ArrayList<ConfigPath> flatList = new ArrayList<>();
+        ConfigPath currentPath = this;
+        while (currentPath != null) {
+            flatList.add(currentPath);
+            currentPath = currentPath.getParent();
+        }
+        Collections.reverse(flatList);
+        return flatList;
     }
 
     @Override
