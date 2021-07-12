@@ -45,6 +45,8 @@ public class TelegramBridgeMod {
         final File configFile = new File(event.getModConfigurationDirectory(), "telegrambridge.json");
         final JSONConfig config = new JSONConfig(configFile);
         ConfigWorkaround.init(config, TelegramBridgeConfig.class);
+        config.read();
+        ConfigWorkaround.onReload();
         config.save();
         logger = event.getModLog();
 

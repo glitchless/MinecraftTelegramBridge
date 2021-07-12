@@ -63,7 +63,6 @@ public class JSONConfig implements AbstractConfig {
 
     public void read() {
         if (!jsonConfig.exists()) {
-            save();
             return;
         }
         try (Reader jsonReader = new FileReader(jsonConfig)) {
