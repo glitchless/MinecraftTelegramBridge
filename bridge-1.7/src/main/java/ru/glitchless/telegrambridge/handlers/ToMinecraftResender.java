@@ -1,6 +1,7 @@
 package ru.glitchless.telegrambridge.handlers;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import ru.glitchless.telegrambridge.TelegramBridgeMod;
@@ -10,6 +11,7 @@ import ru.glitchless.telegrambridge.core.telegramapi.model.MessageObject;
 import ru.glitchless.telegrambridge.core.telegramapi.model.UserObject;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class ToMinecraftResender extends BaseMessageReceiver {
     @Override
@@ -40,6 +42,10 @@ public class ToMinecraftResender extends BaseMessageReceiver {
 
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         server.addChatMessage(new ChatComponentText(textMessage));
+        final List playerList = server.getConfigurationManager().playerEntityList;
+        for (int i = 0; i < playerList.size(); i++) {
+            ((EntityPlayer) playerList.get(i)).addChatMessage(new ChatComponentText(textMessage));
+        }
         return true;
     }
 }

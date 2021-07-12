@@ -1,10 +1,10 @@
 package ru.glitchless.telegrambridge;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
 import ru.glitchless.telegrambridge.config.JSONConfig;
 import ru.glitchless.telegrambridge.core.config.ConfigWorkaround;
@@ -21,7 +21,8 @@ import java.io.File;
 @Mod(
         modid = TelegramBridgeMod.MODID,
         name = "Telegram Bridge",
-        version = "${version}"
+        version = "${version}",
+        acceptableRemoteVersions = "*"
 )
 public class TelegramBridgeMod {
     public static final String MODID = "telegrambridge";
@@ -31,9 +32,8 @@ public class TelegramBridgeMod {
     private static TelegramLoop telegramLoop;
 
     public TelegramBridgeMod() {
-        //MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new ToTelegramEvent());
-        MinecraftForge.EVENT_BUS.register(new ToTelegramResender());
+        FMLCommonHandler.instance().bus().register(new ToTelegramEvent());
+        FMLCommonHandler.instance().bus().register(new ToTelegramResender());
     }
 
     public static TelegramContext getContext() {

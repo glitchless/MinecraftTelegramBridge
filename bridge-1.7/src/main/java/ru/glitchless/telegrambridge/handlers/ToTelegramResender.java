@@ -23,5 +23,4 @@ public class ToTelegramResender {
         final String textMessage = TelegramBridgeConfig.text.chatmessage_to_telegram.replace("${nickname}", event.username).replace("${message}", message);
         broadcastToChats(textMessage);
     }
-
 }
