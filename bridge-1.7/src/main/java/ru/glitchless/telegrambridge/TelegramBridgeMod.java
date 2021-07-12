@@ -5,6 +5,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
 import ru.glitchless.telegrambridge.config.JSONConfig;
 import ru.glitchless.telegrambridge.core.config.ConfigWorkaround;
@@ -33,7 +34,7 @@ public class TelegramBridgeMod {
 
     public TelegramBridgeMod() {
         FMLCommonHandler.instance().bus().register(new ToTelegramEvent());
-        FMLCommonHandler.instance().bus().register(new ToTelegramResender());
+        MinecraftForge.EVENT_BUS.register(new ToTelegramResender());
     }
 
     public static TelegramContext getContext() {
