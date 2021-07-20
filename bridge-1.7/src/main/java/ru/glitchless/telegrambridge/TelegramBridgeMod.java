@@ -33,7 +33,9 @@ public class TelegramBridgeMod {
     private static TelegramLoop telegramLoop;
 
     public TelegramBridgeMod() {
-        FMLCommonHandler.instance().bus().register(new ToTelegramEvent());
+        final ToTelegramEvent toTelegramEvent = new ToTelegramEvent();
+        FMLCommonHandler.instance().bus().register(toTelegramEvent);
+        MinecraftForge.EVENT_BUS.register(toTelegramEvent);
         MinecraftForge.EVENT_BUS.register(new ToTelegramResender());
     }
 
