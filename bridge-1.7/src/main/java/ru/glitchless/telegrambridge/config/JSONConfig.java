@@ -42,9 +42,28 @@ public class JSONConfig implements AbstractConfig {
         return currentPath;
     }
 
-    @Override
-    public Object getValue(ConfigPath path) {
-        return getParentJsonObject(path).get(path.getName());
+    /**
+     * Merge "source" into "target". If fields have equal name, merge them recursively.
+     *
+     * @return the merged object (target).
+     */
+    private static JSONObject deepMerge(JSONObject source, JSONObject target) {
+        for (Object key : source.keySet()) {
+            Object value = source.get(key);
+            if (!target.containsKey(key)) {
+                // new value for "key":
+                target.put(key, value);
+            } else {
+                // existing value for "key" - recursively deep merge:
+                if (value instanceof JSONObject) {
+                    JSONObject valueJson = (JSONObject) value;
+                    deepMerge(valueJson, (JSONObject) target.get(key));
+                } else {
+                    target.put(key, value);
+                }
+            }
+        }
+        return target;
     }
 
     @Override
@@ -61,15 +80,13 @@ public class JSONConfig implements AbstractConfig {
         getParentJsonObject(path).put(path.getName(), value);
     }
 
-    public void read() {
-        if (!jsonConfig.exists()) {
-            return;
+    @Override
+    public Object getValue(ConfigPath path) {
+        final JSONObject jsonObject = getParentJsonObject(path);
+        if (!jsonObject.containsKey(path.getName())) {
+            return null;
         }
-        try (Reader jsonReader = new FileReader(jsonConfig)) {
-            config = (JSONObject) JSONValue.parse(jsonReader);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return jsonObject.get(path.getName());
     }
 
     public void save() {
@@ -96,4 +113,17 @@ public class JSONConfig implements AbstractConfig {
         }
         return targetObj;
     }
+
+    public void read() {
+        if (!jsonConfig.exists()) {
+            return;
+        }
+        try (Reader jsonReader = new FileReader(jsonConfig)) {
+            deepMerge((JSONObject) JSONValue.parse(jsonReader), config);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+
 }

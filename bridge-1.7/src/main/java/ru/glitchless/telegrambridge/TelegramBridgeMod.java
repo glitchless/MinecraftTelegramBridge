@@ -12,10 +12,7 @@ import ru.glitchless.telegrambridge.core.config.ConfigWorkaround;
 import ru.glitchless.telegrambridge.core.config.TelegramBridgeConfig;
 import ru.glitchless.telegrambridge.core.telegramapi.TelegramContext;
 import ru.glitchless.telegrambridge.core.telegramapi.TelegramLoop;
-import ru.glitchless.telegrambridge.handlers.PlayerList;
-import ru.glitchless.telegrambridge.handlers.ToMinecraftResender;
-import ru.glitchless.telegrambridge.handlers.ToTelegramEvent;
-import ru.glitchless.telegrambridge.handlers.ToTelegramResender;
+import ru.glitchless.telegrambridge.handlers.*;
 
 import java.io.File;
 
@@ -58,6 +55,7 @@ public class TelegramBridgeMod {
 
         context.addListener(new ToMinecraftResender());
         context.addListener(new PlayerList());
+        context.addListener(new StatusCommand());
     }
 
     @Mod.EventHandler

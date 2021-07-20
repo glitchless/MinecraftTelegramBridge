@@ -96,15 +96,15 @@ public class ConfigWorkaround {
 
         if (field.getType().isAssignableFrom(List.class)) {
             setIfNotNull(field, obj, configValue);
-        } else if (field.getType() == String.class) {
+        } else if (field.getType() == String.class && configValue != null) {
             setIfNotNull(field, obj, configValue.toString());
         } else if (field.getType() == boolean.class) {
             setIfNotNull(field, obj, configValue);
-        } else if (field.getType().isEnum()) {
+        } else if (field.getType().isEnum() && configValue != null) {
             setIfNotNull(field, obj, Enum.valueOf((Class<Enum>) field.getType(), configValue.toString()));
         } else if (field.getType().isAssignableFrom(Number.class)) {
             setIfNotNull(field, obj, configValue);
-        } else if (field.getType() == int.class) {
+        } else if (field.getType() == int.class && configValue != null) {
             if (configValue instanceof Long) {
                 setIfNotNull(field, obj, ((Long) configValue).intValue());
             } else setIfNotNull(field, obj, configValue);
