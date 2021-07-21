@@ -3,9 +3,7 @@ package ru.glitchless.telegrambridge.core.config;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ConfigWorkaround {
     public static final ConfigPath CATEGORY_GENERAL = new ConfigPath("general");
@@ -98,16 +96,18 @@ public class ConfigWorkaround {
 
         if (field.getType().isAssignableFrom(List.class)) {
             setIfNotNull(field, obj, configValue);
-        } else if (field.getType() == String.class) {
+        } else if (field.getType() == String.class && configValue != null) {
             setIfNotNull(field, obj, configValue.toString());
         } else if (field.getType() == boolean.class) {
             setIfNotNull(field, obj, configValue);
-        } else if (field.getType().isEnum()) {
+        } else if (field.getType().isEnum() && configValue != null) {
             setIfNotNull(field, obj, Enum.valueOf((Class<Enum>) field.getType(), configValue.toString()));
         } else if (field.getType().isAssignableFrom(Number.class)) {
             setIfNotNull(field, obj, configValue);
-        } else if (field.getType() == int.class) {
-            setIfNotNull(field, obj, configValue);
+        } else if (field.getType() == int.class && configValue != null) {
+            if (configValue instanceof Long) {
+                setIfNotNull(field, obj, ((Long) configValue).intValue());
+            } else setIfNotNull(field, obj, configValue);
         } else {
             for (Field innerField : field.get(obj).getClass().getDeclaredFields()) {
                 invalidateConfig(currentPath, innerField, field.get(obj));

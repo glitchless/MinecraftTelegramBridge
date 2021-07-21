@@ -54,6 +54,7 @@ public class TelegramBridgeConfig {
         public String notfoundchat = "Chat `${chatid}` is not found in allowed chats. You can add it in `config/telegrambridge.cfg`";
         public String player_empty = "No one is online. Maybe it's time to fix it? :)";
         public String player_list = "*Players online*:${endline}${endline}${playerlist}${endline}Total: *${playercount}*";
+        public String status_cmd = "Now on the server: *${time}* (${timesofday})";
     }
 
     public static class ProxyConfig {
