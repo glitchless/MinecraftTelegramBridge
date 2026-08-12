@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+// mod_version is kept in the root gradle.properties so this build and the root build
+// never drift apart. This project is not part of the root build, so read it directly.
+def rootProperties = new Properties()
+file('../gradle.properties').withInputStream { rootProperties.load(it) }
+def modVersion = rootProperties.getProperty('mod_version')
+
+version = "1.20.1-${modVersion}"
+group = 'ru.glitchless.telegrambridge'
+archivesBaseName = 'telegrambridge'
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+// The shared code lives in :core, which belongs to the root (Gradle 6.9) build and cannot be
+// evaluated here. Compile its sources straight into this jar instead - the result is equivalent
+// to the `configurations.embed` trick the legacy modules use to bundle the core classes.
+sourceSets.main.java.srcDir '../core/src/main/java'
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                telegrambridge {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                telegrambridge {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.10'
+
+    // :core also uses gson, commons-lang3 and log4j-api. Minecraft 1.20.1 ships all of them,
+    // so they arrive on the compile classpath with the `minecraft` dependency and nothing
+    // third-party has to be bundled into the mod jar.
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+tasks.named('processResources', ProcessResources) {
+    def replaceProperties = [version: modVersion, mcversion: '1.20.1']
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+tasks.named('jar', Jar) {
+    manifest {
+        attributes([
+                'Specification-Title'     : 'telegrambridge',
+                'Specification-Vendor'    : 'lionzxy',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : modVersion,
+                'Implementation-Vendor'   : 'lionzxy',
+        ])
+    }
+}

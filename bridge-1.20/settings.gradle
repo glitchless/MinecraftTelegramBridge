@@ -1,0 +1,14 @@
+// bridge-1.20 is a standalone build: Forge 1.20.1 needs ForgeGradle 6 / Gradle 8 / Java 17,
+// which the legacy modules in the root build (Gradle 6.9, ForgeGradle 4.1 and 1.2) cannot run on.
+// Build it from this directory: ./gradlew build
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
+rootProject.name = 'bridge-1.20'
